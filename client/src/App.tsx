@@ -7,9 +7,9 @@ import Todo from "./pages/todo";
 function App() {
   return (
     <Routes>
-      <Route path='/' element={<Home />} />
+      <Route path='/home' element={<Home />} />
       <Route path='/auth' element={<Auth />} />
-      <Route path='/todo' element={<Todo />} />
+      <Route path='/' element={<Todo />} />
       <Route path='*' element={<PageNotFound />} />
     </Routes>
   );

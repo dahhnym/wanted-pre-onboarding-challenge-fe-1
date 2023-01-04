@@ -1,15 +1,32 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createUser, getUser } from "../../utils/auth";
 import Logo from "./../../assets/wanted-logo.png";
 import axios from "axios";
 
+type ConfirmBtnProps = {
+  isValid: boolean;
+};
+
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSignUpClicked, setIsSignUpClicked] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [validiation, setValidation] = useState({
+    emailIsValid: false,
+    passwordIsValid: false,
+  });
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  }, []);
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,14 +37,14 @@ const Auth = () => {
         if (isSuccess) {
           localStorage.setItem("token", data.token);
           alert(data.message);
-          navigate("/todo");
+          navigate("/");
         } else {
           return;
         }
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        alert(error.response?.data.details);
+        setErrorMsg(error.response?.data.details);
       }
       return;
     }
@@ -38,14 +55,14 @@ const Auth = () => {
       if (isSuccess) {
         localStorage.setItem("token", data.token);
         alert(data.message);
-        navigate("/todo");
+        navigate("/");
       } else {
         alert(`로그인 실패. ${data.message}`);
         return;
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        alert(error.response?.data.details);
+        setErrorMsg(error.response?.data.details);
       }
       return;
     }
@@ -53,8 +70,23 @@ const Auth = () => {
 
   const validateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-    emailRegex.test(e.target.value);
+    const isValid = emailRegex.test(e.target.value);
+    console.log("email validation", isValid);
+    setValidation((prev) => {
+      return { ...prev, emailIsValid: isValid };
+    });
   };
+
+  const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#&^])[A-Za-z\d@$!%*#&^]{8,}$/g;
+    const isValid = passwordRegex.test(e.target.value);
+    console.log("password validation", isValid);
+    setValidation((prev) => {
+      return { ...prev, passwordIsValid: isValid };
+    });
+  };
+
   const emailChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -63,15 +95,18 @@ const Auth = () => {
     setPassword(e.target.value);
   };
 
-  const signUpSignInClickHandler = () => {
+  const authClickHandler = () => {
     setIsSignUpClicked((prev) => !prev);
+    setEmail("");
+    setPassword("");
+    setErrorMsg("");
   };
 
   const REGISTERED = "이미 회원이신가요?";
   const NOT_REGISTERED = "아직 회원이 아니신가요?";
 
   return (
-    <div>
+    <Container>
       <h1>
         <img src={Logo} alt='원티드' />
       </h1>
@@ -84,26 +119,80 @@ const Auth = () => {
           onBlur={validateEmail}
         />
         <label htmlFor=''>비밀번호</label>
-
         <input
           type='password'
           value={password}
           onChange={passwordChangeHandler}
+          onBlur={validatePassword}
         />
-        <button>{isSignUpClicked ? "회원가입" : "로그인"}</button>
+        {errorMsg && <Error>{errorMsg}</Error>}
+        <ConfirmBtn
+          isValid={validiation.emailIsValid && validiation.passwordIsValid}>
+          {isSignUpClicked ? "회원가입" : "로그인"}
+        </ConfirmBtn>
       </Form>
-      <p>
-        {isSignUpClicked ? REGISTERED : NOT_REGISTERED}
-        <button type='button' onClick={signUpSignInClickHandler}>
+      <AuthGuide>
+        <span>{isSignUpClicked ? REGISTERED : NOT_REGISTERED}</span>
+        <button type='button' onClick={authClickHandler}>
           {isSignUpClicked ? "로그인" : "회원가입"}
         </button>
-      </p>
-    </div>
+      </AuthGuide>
+    </Container>
   );
 };
 
 export default Auth;
 
 const Form = styled.form`
-  border: solid 1px red;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 400px;
+  label {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  input {
+    width: 100%;
+    height: 2.5rem;
+    padding: 1rem 0.8rem;
+    border: solid 1px blue;
+    border-radius: 5px;
+  }
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+`;
+
+const Error = styled.p`
+  color: red;
+`;
+
+const ConfirmBtn = styled.button<ConfirmBtnProps>`
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: ${(props) => (props.isValid ? "#3366FF" : "#f2f4f7")};
+  color: ${(props) => (props.isValid ? "#fff" : "#d7cfcc")};
+  height: 45px;
+  border-radius: 20px;
+  &:hover {
+    cursor: ${(props) => (props.isValid ? "pointer" : "default")};
+  }
+`;
+
+const AuthGuide = styled.p`
+  font-size: 0.9rem;
+  button {
+    margin-left: 0.5rem;
+    text-decoration: underline;
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
