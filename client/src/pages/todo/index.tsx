@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { createTodo, getTodos } from "../../utils/todo";
 
@@ -13,11 +13,11 @@ interface TodoData {
 
 const Todo = () => {
   const navigate = useNavigate();
-
   const token = localStorage.getItem("token");
 
   const [todoInput, setTodoInput] = useState({ title: "", content: "" });
   const [todoData, setTodoData] = useState<Array<TodoData>>([]);
+  const [selectedId, setSelectedId] = useState("");
 
   useEffect(() => {
     if (!token) {
@@ -32,9 +32,10 @@ const Todo = () => {
         const data = await getTodos(token);
         setTodoData(data);
       };
+
       fetchTodoData();
     }
-  });
+  }, []);
 
   const createTodoHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -55,6 +56,12 @@ const Todo = () => {
     });
   };
 
+  const toggleTodoHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const value = e.currentTarget.pathname;
+    const newValue = value.slice(1);
+    setSelectedId(newValue);
+  };
+
   return (
     <Container>
       <h1>Todo</h1>
@@ -72,6 +79,7 @@ const Todo = () => {
           id=''
           cols={30}
           rows={10}
+          maxLength={100}
           placeholder='내용을 입력하세요'
           value={todoInput.content}
           onChange={contentChangeHandler}></textarea>
@@ -80,7 +88,16 @@ const Todo = () => {
       <ul>
         {todoData &&
           todoData.map((data) => {
-            return <li key={data.id}>{data.title}</li>;
+            return (
+              <div key={data.id}>
+                <li>
+                  <Link to={`/${data.id}`} onClick={toggleTodoHandler}>
+                    {data.title}
+                  </Link>
+                </li>
+                {data.id === selectedId && <Outlet context={data.content} />}
+              </div>
+            );
           })}
       </ul>
     </Container>
@@ -90,13 +107,11 @@ const Todo = () => {
 export default Todo;
 
 const Container = styled.div`
-  border: solid 1px blue;
   display: flex;
   flex-direction: column;
 `;
 
 const Form = styled.form`
-  border: solid 1px lavender;
   display: flex;
   flex-direction: column;
 `;
