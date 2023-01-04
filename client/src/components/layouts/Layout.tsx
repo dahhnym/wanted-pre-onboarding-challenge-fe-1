@@ -12,7 +12,7 @@ export default Layout;
 
 const Container = styled.div`
   border: solid 1px red;
-  max-width: 960px;
+  max-width: 820px;
   height: 100vh;
   margin: 0 auto;
 `;

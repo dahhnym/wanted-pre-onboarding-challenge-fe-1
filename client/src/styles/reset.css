@@ -1,13 +1,10 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 button {
   border: none;
   background-color: transparent;
-}
-
-button:hover {
-  cursor: pointer;
 }
