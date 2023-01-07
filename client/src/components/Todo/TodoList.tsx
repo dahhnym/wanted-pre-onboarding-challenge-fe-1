@@ -1,6 +1,6 @@
 import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { getTodos } from "../../utils/todo";
+import { deleteTodo, getTodos } from "../../utils/todo";
 
 export interface TodoData {
   content: string;
@@ -20,21 +20,34 @@ const TodoList: React.FC<Props> = ({ setTodoData, todoData }) => {
 
   const [selectedId, setSelectedId] = useState("");
 
-  useEffect(() => {
+  const fetchTodoData = async () => {
     if (token) {
-      const fetchTodoData = async () => {
-        const data = await getTodos(token);
-        setTodoData(data);
-      };
-
-      fetchTodoData();
+      const data = await getTodos(token);
+      setTodoData(data);
     }
+  };
+
+  useEffect(() => {
+    fetchTodoData();
   }, []);
 
   const toggleTodoHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const value = e.currentTarget.pathname;
     const newValue = value.slice(1);
     setSelectedId(newValue);
+  };
+
+  const deleteTodoHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const isConfirmedToDelete = window.confirm("삭제 하시겠습니까?");
+    if (isConfirmedToDelete) {
+      const todoIdToDelete = e.currentTarget.value;
+      if (token) {
+        deleteTodo(token, todoIdToDelete);
+        fetchTodoData();
+      }
+    } else {
+      return;
+    }
   };
   return (
     <ul>
@@ -50,7 +63,9 @@ const TodoList: React.FC<Props> = ({ setTodoData, todoData }) => {
               </li>
               {data.id === selectedId && <Outlet context={data.content} />}
               <button>수정</button>
-              <button>삭제</button>
+              <button onClick={deleteTodoHandler} value={data.id}>
+                삭제
+              </button>
             </div>
           );
         })}

@@ -22,8 +22,8 @@ export const createTodo = (todoInput: TodoProps, token: string) => {
     .then((res) => console.log("createTodo res", res));
 };
 
-export const getTodos = (token: string) => {
-  return axios
+export const getTodos = async (token: string) => {
+  return await axios
     .get("http://localhost:8080/todos", {
       headers: {
         Authorization: `login ${token}`,
@@ -32,4 +32,14 @@ export const getTodos = (token: string) => {
     .then((res) => {
       return res.data.data;
     });
+};
+
+export const deleteTodo = async (token: string, id: string) => {
+  return await axios
+    .delete(`http://localhost:8080/todos/${id}`, {
+      headers: {
+        Authorization: `login ${token}`,
+      },
+    })
+    .then((res) => console.log("delete res", res));
 };
