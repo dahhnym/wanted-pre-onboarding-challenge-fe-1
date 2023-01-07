@@ -71,7 +71,6 @@ const Auth = () => {
   const validateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     const isValid = emailRegex.test(e.target.value);
-    console.log("email validation", isValid);
     setValidation((prev) => {
       return { ...prev, emailIsValid: isValid };
     });
@@ -81,7 +80,6 @@ const Auth = () => {
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#&^])[A-Za-z\d@$!%*#&^]{8,}$/g;
     const isValid = passwordRegex.test(e.target.value);
-    console.log("password validation", isValid);
     setValidation((prev) => {
       return { ...prev, passwordIsValid: isValid };
     });
