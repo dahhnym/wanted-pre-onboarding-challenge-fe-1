@@ -54,14 +54,15 @@ const TodoForm: React.FC<Props> = ({ setTodoData }) => {
 
   return (
     <Form onSubmit={createTodoHandler}>
-      <label htmlFor=''>투두</label>
+      <Label htmlFor=''>투두</Label>
       <TitleInput
         type='text'
         name='title'
         value={title}
         onChange={titleChangeHandler}
+        maxLength={35}
       />
-      <label htmlFor='content'>메모</label>
+      <Label htmlFor='content'>메모</Label>
       <ContentInput
         name='content'
         id=''
@@ -80,7 +81,13 @@ export default TodoForm;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  border: solid 1px blue;
+`;
+
+const Label = styled.label`
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #888888;
+  margin-bottom: 0.5rem;
 `;
 
 const TitleInput = styled.input`
@@ -88,6 +95,7 @@ const TitleInput = styled.input`
   border: solid 1px #ebebeb;
   border-radius: 5px;
   padding-left: 0.5rem;
+  margin-bottom: 0.8rem;
 `;
 
 const ContentInput = styled.textarea`

@@ -27,7 +27,7 @@ const Todo = () => {
 
   return (
     <Container>
-      <h1>Todo</h1>
+      <Heading>Todo</Heading>
       <TodoForm setTodoData={setTodoData} />
       <TodoList setTodoData={setTodoData} todoData={todoData} />
     </Container>
@@ -39,4 +39,9 @@ export default Todo;
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+`;
+
+const Heading = styled.h1`
+  margin: 2rem 0;
+  text-align: center;
 `;

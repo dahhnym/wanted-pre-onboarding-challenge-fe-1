@@ -43,3 +43,20 @@ export const deleteTodo = async (token: string, id: string) => {
     })
     .then((res) => console.log("delete res", res));
 };
+
+export const updateTodo = (todoInput: TodoProps, token: string, id: string) => {
+  return axios
+    .put(
+      `http://localhost:8080/todos/${id}`,
+      {
+        title: todoInput.title,
+        content: todoInput.content,
+      },
+      {
+        headers: {
+          Authorization: `login ${token}`,
+        },
+      }
+    )
+    .then((res) => console.log("update todo res", res));
+};

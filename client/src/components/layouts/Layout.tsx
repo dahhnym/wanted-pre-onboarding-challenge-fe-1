@@ -11,8 +11,7 @@ const Layout: React.FC<Props> = ({ children }) => {
 export default Layout;
 
 const Container = styled.div`
-  border: solid 1px red;
-  max-width: 820px;
+  max-width: 500px;
   height: 100vh;
   margin: 0 auto;
 `;
