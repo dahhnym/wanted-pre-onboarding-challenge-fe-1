@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Signout from "../../components/Auth/Signout";
 import TodoForm from "../../components/Todo/TodoForm";
 import TodoList from "../../components/Todo/TodoList";
 
@@ -27,6 +28,7 @@ const Todo = () => {
 
   return (
     <Container>
+      <Signout />
       <Heading>Todo</Heading>
       <TodoForm setTodoData={setTodoData} />
       <TodoList setTodoData={setTodoData} todoData={todoData} />
