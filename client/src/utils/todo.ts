@@ -35,17 +35,19 @@ export const getTodos = async (token: string) => {
 };
 
 export const deleteTodo = async (token: string, id: string) => {
-  return await axios
-    .delete(`http://localhost:8080/todos/${id}`, {
-      headers: {
-        Authorization: `login ${token}`,
-      },
-    })
-    .then((res) => console.log("delete res", res));
+  return await axios.delete(`http://localhost:8080/todos/${id}`, {
+    headers: {
+      Authorization: `login ${token}`,
+    },
+  });
 };
 
-export const updateTodo = (todoInput: TodoProps, token: string, id: string) => {
-  return axios
+export const updateTodo = async (
+  todoInput: TodoProps,
+  token: string,
+  id: string
+) => {
+  return await axios
     .put(
       `http://localhost:8080/todos/${id}`,
       {
@@ -58,5 +60,7 @@ export const updateTodo = (todoInput: TodoProps, token: string, id: string) => {
         },
       }
     )
-    .then((res) => console.log("update todo res", res));
+    .then((res) => {
+      return res.status;
+    });
 };
