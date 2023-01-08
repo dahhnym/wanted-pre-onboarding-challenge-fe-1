@@ -5,6 +5,7 @@ import { createUser, getUser } from "../../utils/auth";
 import Logo from "./../../assets/wanted-logo.png";
 import axios from "axios";
 import { THEME_COLOR } from "../../constants/todo";
+import { NOT_REGISTERED, REGISTERED } from "../../constants/auth";
 
 type ConfirmBtnProps = {
   isValid: boolean;
@@ -29,8 +30,28 @@ const Auth = () => {
     }
   }, []);
 
+  const validateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // @, 콤마(.) 포함
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    const isValid = emailRegex.test(e.target.value);
+    setValidation((prev) => {
+      return { ...prev, emailIsValid: isValid };
+    });
+  };
+
+  const validatePassword = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // 영문 대소문자, 숫자, 특수문자(@$!%*#&^) 포함 8글자 이상
+    const passwordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#&^])[A-Za-z\d@$!%*#&^]{8,}$/g;
+    const isValid = passwordRegex.test(e.currentTarget.value);
+    setValidation((prev) => {
+      return { ...prev, passwordIsValid: isValid };
+    });
+  };
+
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setErrorMsg("");
     try {
       if (isSignUpClicked) {
         const res = await createUser(email, password);
@@ -42,6 +63,7 @@ const Auth = () => {
         } else {
           return;
         }
+        return;
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -69,23 +91,6 @@ const Auth = () => {
     }
   };
 
-  const validateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-    const isValid = emailRegex.test(e.target.value);
-    setValidation((prev) => {
-      return { ...prev, emailIsValid: isValid };
-    });
-  };
-
-  const validatePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const passwordRegex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#&^])[A-Za-z\d@$!%*#&^]{8,}$/g;
-    const isValid = passwordRegex.test(e.target.value);
-    setValidation((prev) => {
-      return { ...prev, passwordIsValid: isValid };
-    });
-  };
-
   const emailChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
@@ -100,9 +105,6 @@ const Auth = () => {
     setPassword("");
     setErrorMsg("");
   };
-
-  const REGISTERED = "이미 회원이신가요?";
-  const NOT_REGISTERED = "아직 회원이 아니신가요?";
 
   return (
     <Container>
@@ -122,7 +124,8 @@ const Auth = () => {
           type='password'
           value={password}
           onChange={passwordChangeHandler}
-          onBlur={validatePassword}
+          // onBlur={validatePassword}
+          onKeyUp={validatePassword}
         />
         {errorMsg && <Error>{errorMsg}</Error>}
         <ConfirmBtn
