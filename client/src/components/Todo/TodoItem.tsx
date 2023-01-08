@@ -47,7 +47,6 @@ const TodoItem: React.FC<Props> = ({ data, fetchTodoData }) => {
   };
 
   const editTodoHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("clicked todo id", e.currentTarget.value);
     const selectedTodoId = e.currentTarget.value;
     setIsEditing((prev) => !prev);
     setEditTodoId(selectedTodoId);
