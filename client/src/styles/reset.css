@@ -12,3 +12,8 @@ button {
 li {
   list-style: none;
 }
+
+a,
+a:visited {
+  color: initial;
+}
