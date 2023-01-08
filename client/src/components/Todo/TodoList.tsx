@@ -1,4 +1,5 @@
 import { useEffect, Dispatch, SetStateAction } from "react";
+import styled from "styled-components";
 import { getTodos } from "../../utils/todo";
 import TodoItem, { TodoData } from "./TodoItem";
 
@@ -22,15 +23,20 @@ const TodoList: React.FC<Props> = ({ setTodoData, todoData }) => {
   }, []);
 
   return (
-    <ul>
+    <List>
       {todoData &&
         todoData.map((data) => {
           return (
             <TodoItem key={data.id} fetchTodoData={fetchTodoData} data={data} />
           );
         })}
-    </ul>
+    </List>
   );
 };
 
 export default TodoList;
+
+const List = styled.ul`
+  display: flex;
+  flex-direction: column-reverse;
+`;
