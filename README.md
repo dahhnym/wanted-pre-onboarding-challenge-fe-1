@@ -1,5 +1,8 @@
 # 원티드 프리온보딩 프론트엔드 1월 챌린지 사전과제
 
+해당과제에 사용된 API는 원티드 프리온보딩 챌린지에서 제공하는 API를 사용하였습니다. <br>
+출처 : https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api
+
 ## Dependency
 
 - React 18.2.0
