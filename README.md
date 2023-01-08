@@ -11,15 +11,23 @@
 ## 실행방법
 
 ```
-$ git clone
+$ git clone https://github.com/dahhnym/wanted-pre-onboarding-challenge-fe-1.git
 $ npm install
+
 // 서버실행
 $ cd server
 $ yarn start
+
 // 클라이언트 실행
 $ cd client
 $ npm start
 ```
+
+## 데모
+
+### 배포 URL
+
+http://wanted-pre-onboarding-challenge-fe-1-two.vercel.app
 
 ### 테스트 계정
 
@@ -34,4 +42,4 @@ $ npm start
 
 |                                                             투두 CRUD                                                             |
 | :-------------------------------------------------------------------------------------------------------------------------------: |
-| <img src="https://user-images.githubusercontent.com/74545780/211207132-e4429a1a-52b6-4a77-a5b0-f5e311c1399a.gif" width="500px" /> |
+| <img src="https://user-images.githubusercontent.com/74545780/211207132-e4429a1a-52b6-4a77-a5b0-f5e311c1399a.gif" width="400px" /> |
