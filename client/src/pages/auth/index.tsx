@@ -52,6 +52,12 @@ const Auth = () => {
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrorMsg("");
+    if (!validiation.passwordIsValid) {
+      setErrorMsg(
+        "비밀번호는 영문 대소문자, 숫자, 특수문자(@$!%*#&^) 포함 8글자 이상이어야 합니다."
+      );
+      return;
+    }
     try {
       if (isSignUpClicked) {
         const res = await createUser(email, password);
