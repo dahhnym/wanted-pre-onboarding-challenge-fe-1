@@ -26,9 +26,9 @@ const Auth = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      navigate("/");
+      navigate("/todo");
     }
-  }, []);
+  }, [navigate]);
 
   const validateEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     // @, 콤마(.) 포함
@@ -65,7 +65,7 @@ const Auth = () => {
         if (isSuccess) {
           localStorage.setItem("token", data.token);
           alert(data.message);
-          navigate("/");
+          navigate("/todo");
         } else {
           return;
         }
@@ -84,7 +84,7 @@ const Auth = () => {
       if (isSuccess) {
         localStorage.setItem("token", data.token);
         alert(data.message);
-        navigate("/");
+        navigate("/todo");
       } else {
         alert(`로그인 실패. ${data.message}`);
         return;

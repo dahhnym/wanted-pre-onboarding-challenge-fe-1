@@ -8,7 +8,7 @@ const Signout = () => {
   const SignoutHandler = () => {
     localStorage.removeItem("token");
     alert("로그아웃되었습니다.");
-    navigate("/home");
+    navigate("/");
   };
 
   return (

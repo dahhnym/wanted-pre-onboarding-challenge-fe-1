@@ -27,9 +27,9 @@ const TodoItem: React.FC<Props> = ({ data, fetchTodoData }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleTodoHandler = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const value = e.currentTarget.pathname;
-    const newValue = value.slice(1);
-    setSelectedId(newValue);
+    const pathname = e.currentTarget.pathname;
+    const todoId = pathname.slice(6);
+    setSelectedId(todoId);
     setIsShow((prev) => !prev);
   };
 
@@ -58,7 +58,7 @@ const TodoItem: React.FC<Props> = ({ data, fetchTodoData }) => {
         <input className='todo-item-checkbox' type='checkbox' name='todo' />
         <Link
           className='todo-item-title'
-          to={`/${data.id}`}
+          to={`/todo/${data.id}`}
           onClick={toggleTodoHandler}>
           <TodoTitle htmlFor='todo'>{data.title}</TodoTitle>
         </Link>
@@ -91,8 +91,8 @@ const ListItem = styled.li`
   display: flex;
   justify-content: space-between;
   & + li {
-    border-top: solid 1px ${THEME_COLOR.GRAY.LIGHT};
-    padding-top: 1rem;
+    border-bottom: solid 1px ${THEME_COLOR.GRAY.LIGHT};
+    padding-bottom: 1rem;
   }
 `;
 
