@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { createUser, getUser } from "../../utils/auth";
 import Logo from "./../../assets/wanted-logo.png";
 import axios from "axios";
+import { THEME_COLOR } from "../../constants/todo";
 
 type ConfirmBtnProps = {
   isValid: boolean;
@@ -168,15 +169,16 @@ const Container = styled.div`
 `;
 
 const Error = styled.p`
-  color: red;
+  color: ${THEME_COLOR.RED};
 `;
 
 const ConfirmBtn = styled.button<ConfirmBtnProps>`
   margin-top: 1rem;
   font-size: 1rem;
   font-weight: bold;
-  background-color: ${(props) => (props.isValid ? "#3366FF" : "#f2f4f7")};
-  color: ${(props) => (props.isValid ? "#fff" : "#d7cfcc")};
+  background-color: ${(props) =>
+    props.isValid ? THEME_COLOR.BLUE : THEME_COLOR.GRAY.LIGHT};
+  color: ${(props) => (props.isValid ? "#fff" : THEME_COLOR.GRAY.DARK)};
   height: 45px;
   border-radius: 20px;
   &:hover {

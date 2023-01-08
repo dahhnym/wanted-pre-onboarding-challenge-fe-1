@@ -2,6 +2,10 @@ import { createTodo, getTodos } from "../../utils/todo";
 import styled from "styled-components";
 import React, { useState, Dispatch, SetStateAction } from "react";
 import { TodoData } from "../../pages/todo";
+import {
+  TODO_CONTENT_MAX_LENGTH,
+  TODO_TITLE_MAX_LENGTH,
+} from "../../constants/todo";
 
 interface Props {
   setTodoData: Dispatch<SetStateAction<TodoData[]>>;
@@ -60,15 +64,16 @@ const TodoForm: React.FC<Props> = ({ setTodoData }) => {
         name='title'
         value={title}
         onChange={titleChangeHandler}
-        maxLength={35}
+        maxLength={TODO_TITLE_MAX_LENGTH}
+        placeholder='최대 25글자'
       />
       <Label htmlFor='content'>메모</Label>
       <ContentInput
         name='content'
         id=''
         rows={3}
-        maxLength={100}
-        placeholder='내용을 입력하세요'
+        maxLength={TODO_CONTENT_MAX_LENGTH}
+        placeholder='내용을 입력하세요. 최대 100글자'
         value={content}
         onChange={contentChangeHandler}></ContentInput>
       <SubmitBtn>추가</SubmitBtn>

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { deleteTodo } from "../../utils/todo";
 import { useState } from "react";
 import TodoEditingModal from "./TodoEditingModal";
+import { THEME_COLOR } from "../../constants/todo";
 
 export interface TodoData {
   content: string;
@@ -60,21 +61,24 @@ const TodoItem: React.FC<Props> = ({ data, fetchTodoData }) => {
           className='todo-item-title'
           to={`/${data.id}`}
           onClick={toggleTodoHandler}>
-          <label htmlFor='todo'>{data.title}</label>
+          <TodoTitle htmlFor='todo'>{data.title}</TodoTitle>
         </Link>
+        {data.id === selectedId && isShow && <Outlet context={data.content} />}
       </Wrapper>
-      {data.id === selectedId && isShow && <Outlet context={data.content} />}
-      <button onClick={editTodoHandler} value={data.id}>
-        수정
-      </button>
-      <button onClick={deleteTodoHandler} value={data.id}>
-        삭제
-      </button>
+      <div>
+        <EditButton onClick={editTodoHandler} value={data.id}>
+          수정
+        </EditButton>
+        <DeleteButton onClick={deleteTodoHandler} value={data.id}>
+          삭제
+        </DeleteButton>
+      </div>
       {isEditing && data.id === editTodoId && (
         <TodoEditingModal
           isModalOpen={isEditing}
           handleModalClose={setIsEditing}
           data={data}
+          fetchTodoData={fetchTodoData}
         />
       )}
     </ListItem>
@@ -85,9 +89,16 @@ export default TodoItem;
 
 const ListItem = styled.li`
   margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  & + li {
+    border-top: solid 1px ${THEME_COLOR.GRAY.LIGHT};
+    padding-top: 1rem;
+  }
 `;
 
 const Wrapper = styled.div`
+  width: 100%;
   .todo-item-title {
     text-decoration: none;
     &:active {
@@ -99,5 +110,40 @@ const Wrapper = styled.div`
   }
   .todo-item-checkbox:checked + .todo-item-title {
     text-decoration: line-through;
+  }
+`;
+
+const TodoTitle = styled.label`
+  margin-left: 0.5rem;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const Button = styled.button`
+  border: solid 1px ${THEME_COLOR.GRAY.LIGHT};
+  padding: 0.3rem 1rem;
+  border-radius: 15px;
+  color: ${THEME_COLOR.GRAY.DARK};
+  font-weight: bold;
+  float: right;
+`;
+
+const EditButton = styled(Button)`
+  margin-bottom: 0.3rem;
+  &:hover {
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    border: solid 1px ${THEME_COLOR.BLUE};
+    color: ${THEME_COLOR.BLUE};
+  }
+`;
+
+const DeleteButton = styled(Button)`
+  &:hover {
+    transition: all ease-in-out 0.2s;
+    cursor: pointer;
+    border: solid 1px ${THEME_COLOR.RED};
+    color: ${THEME_COLOR.RED};
   }
 `;
