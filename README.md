@@ -32,11 +32,6 @@ $ npm start
 
 http://wanted-pre-onboarding-challenge-fe-1-two.vercel.app
 
-### 테스트 계정
-
-이메일: test3@test.com <br>
-비밀번호: qwer1234$
-
 ## 요구사항
 
 ### Login / SignUp
